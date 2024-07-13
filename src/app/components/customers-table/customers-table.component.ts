@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { CustomerTransactions } from 'src/app/Interfaces/customer-transactions';
 import { Customer } from 'src/app/Interfaces/Custsomer';
 import { Transaction } from 'src/app/Interfaces/Transaction';
@@ -9,21 +9,35 @@ import { DataService } from 'src/app/Services/data.service';
   templateUrl: './customers-table.component.html',
   styleUrls: ['./customers-table.component.scss'],
 })
-export class CustomersTableComponent {
+export class CustomersTableComponent implements OnInit, OnChanges {
   Customers: Customer[] = [];
   Transactions: Transaction[] = [];
   CustomerTransactions: CustomerTransactions[] = [];
+  NameSearchInput: string = '';
+  transSearchInput!: number;
 
-  constructor(private _DataService: DataService) {
-    this._DataService.getData().subscribe((res) => {
-      console.log(res);
-      this.Customers = res.customers;
-      this.Transactions = res.transactions;
-      this.transformData(this.Customers, this.Transactions)
+  constructor(private _DataService: DataService) { }
+  
+  ngOnChanges(changes: SimpleChanges): void {
+    throw new Error('Method not implemented.');
+  }
+
+  ngOnInit(): void {
+    this._DataService.getData().subscribe({
+      next: (res) => {
+        console.log(res);
+        this.Customers = res.customers;
+        this.Transactions = res.transactions;
+        this.joinData(this.Customers, this.Transactions);
+      },
+
+      error: (err) => {
+        console.log(err);
+      },
     });
   }
 
-  transformData(cus: Customer[], trans: Transaction[]): void {
+  joinData(cus: Customer[], trans: Transaction[]): void {
     for (let i = 0, n = cus.length; i < n; i++) {
       for (let j = 0, n1 = trans.length; j < n1; j++) {
         if (cus[i].id === trans[j].customer_id) {

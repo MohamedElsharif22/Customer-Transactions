@@ -9,7 +9,9 @@ import { FooterComponent } from './components/footer/footer.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { FormsModule } from '@angular/forms';
 import { DataService } from './Services/data.service';
-import {HttpClientModule} from '@angular/common/http'
+import {HttpClientModule} from '@angular/common/http';
+import { NameSearchPipe } from './Pipes/name-search.pipe';
+import { AmountSearchPipe } from './Pipes/amount-search.pipe'
 @NgModule({
   declarations: [
     AppComponent,
@@ -17,6 +19,8 @@ import {HttpClientModule} from '@angular/common/http'
     NavbarComponent,
     FooterComponent,
     NotFoundComponent,
+    NameSearchPipe,
+    AmountSearchPipe,
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule],
   providers: [DataService],
