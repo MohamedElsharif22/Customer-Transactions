@@ -9,18 +9,16 @@ import { DataService } from 'src/app/Services/data.service';
   templateUrl: './customers-table.component.html',
   styleUrls: ['./customers-table.component.scss'],
 })
-export class CustomersTableComponent implements OnInit, OnChanges {
+export class CustomersTableComponent implements OnInit {
   Customers: Customer[] = [];
   Transactions: Transaction[] = [];
   CustomerTransactions: CustomerTransactions[] = [];
   NameSearchInput: string = '';
   transSearchInput!: number;
 
+  SelectedCustomer: any[] = [];
+
   constructor(private _DataService: DataService) { }
-  
-  ngOnChanges(changes: SimpleChanges): void {
-    throw new Error('Method not implemented.');
-  }
 
   ngOnInit(): void {
     this._DataService.getData().subscribe({
@@ -55,4 +53,12 @@ export class CustomersTableComponent implements OnInit, OnChanges {
       }
     }
   }
+
+
+  onCustomerSelected(customerId: number): void{
+    this.SelectedCustomer = this.CustomerTransactions.filter(c => c.customer_id === customerId);
+    console.log(this.SelectedCustomer);
+    
+  }
+
 }

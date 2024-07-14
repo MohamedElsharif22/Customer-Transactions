@@ -34,17 +34,35 @@
       <tbody>
         <tr
           *ngFor="
-            let customer of CustomerTransactions | nameSearch : NameSearchInput | amountSearch : transSearchInput 
+            let customer of CustomerTransactions
+              | nameSearch : NameSearchInput
+              | amountSearch : transSearchInput
           "
         >
           <td>{{ customer.customer_name }}</td>
           <td>{{ customer.amount }}</td>
           <td>{{ customer.transaction_date }}</td>
           <td>
-            <button class="btn btn-primary" onclick="">View Graph</button>
+            <button
+              class="btn btn-primary"
+              (click)="onCustomerSelected(customer.customer_id)"
+            >
+              View Graph
+            </button>
           </td>
         </tr>
       </tbody>
     </table>
+    <div class="my-4">
+      <app-transaction-chart
+        *ngIf="SelectedCustomer.length != 0; else viewCustomer"
+        [transactions]="SelectedCustomer"
+      ></app-transaction-chart>
+      <ng-template #viewCustomer>
+        <h3 class="text-center mt-3 text-primary-color">
+          Please click on View to show transactions graph.
+        </h3>
+      </ng-template>
+    </div>
   </div>
 </section>
